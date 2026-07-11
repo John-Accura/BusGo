@@ -10,7 +10,14 @@ export async function GET() {
     return NextResponse.json({ ok: true, db: true, time: new Date().toISOString() });
   } catch {
     return NextResponse.json(
-      { ok: false, db: false, time: new Date().toISOString() },
+      {
+        ok: false,
+        db: false,
+        // Boolean only — helps distinguish "no DATABASE_URL configured" from
+        // "configured but unreachable" without exposing anything sensitive.
+        databaseUrlConfigured: !!process.env.DATABASE_URL,
+        time: new Date().toISOString(),
+      },
       { status: 503 },
     );
   }
