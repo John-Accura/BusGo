@@ -35,12 +35,19 @@ function LoginForm() {
     window.location.href = params.get("next") || data.home || "/";
   }
 
+  const adminMode = params.get("admin") === "1";
+
   return (
     <div className="shell shell-narrow" style={{ maxWidth: 440 }}>
       <div className="eyebrow" style={{ marginTop: 30 }}>
-        Welcome back
+        {adminMode ? "Central admin control" : "Welcome back"}
       </div>
-      <h1 className="page-title">Sign in</h1>
+      <h1 className="page-title">{adminMode ? "Admin sign-in" : "Sign in"}</h1>
+      {adminMode && (
+        <p className="muted small" style={{ marginTop: 4 }}>
+          Restricted area — platform administrators only.
+        </p>
+      )}
       <form className="card" onSubmit={submit} style={{ marginTop: 14 }}>
         <div className="field">
           <label>Email</label>
@@ -63,12 +70,21 @@ function LoginForm() {
         </div>
         <div className="err">{err}</div>
         <button className="btn btn-primary btn-block" disabled={busy}>
-          {busy ? "Signing in…" : "Sign in"}
+          {busy ? "Signing in…" : adminMode ? "Sign in to admin" : "Sign in"}
         </button>
-        <p className="small muted" style={{ textAlign: "center", marginTop: 12 }}>
-          New to BusGo? <Link href="/register">Create an account</Link>
-        </p>
+        {!adminMode && (
+          <p className="small muted" style={{ textAlign: "center", marginTop: 12 }}>
+            New to BusGo? <Link href="/register">Create an account</Link>
+          </p>
+        )}
       </form>
+      <p className="dim small" style={{ textAlign: "center", marginTop: 14 }}>
+        {adminMode ? (
+          <Link href="/login">← Customer / partner sign-in</Link>
+        ) : (
+          <Link href="/login?admin=1">Platform administrator sign-in</Link>
+        )}
+      </p>
       {isLocal && (
         <p className="dim small" style={{ marginTop: 14, lineHeight: 1.9 }}>
           Demo accounts (password <span className="mono">bus2026</span>):

@@ -156,6 +156,10 @@ export default function RegisterPage() {
             Already registered? <Link href="/login">Sign in</Link>
           </p>
         </form>
+        <p className="dim small" style={{ textAlign: "center", marginTop: 14 }}>
+          Drivers receive their login from their fleet owner ·{" "}
+          <Link href="/login?admin=1">Platform administrator sign-in</Link>
+        </p>
       </div>
     </>
   );
